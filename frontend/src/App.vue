@@ -1,26 +1,33 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <h1>Data dari Backend</h1>
+    <ul>
+      <li v-for="item in data" :key="item.id">{{ item.nama }}</li>
+    </ul>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { fetchData } from '@/api/api'; // Sesuaikan dengan path sesuai struktur proyek Anda
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      data: [],
+    };
+  },
+  mounted() {
+    this.loadData();
+  },
+  methods: {
+    async loadData() {
+      try {
+        const response = await fetchData();
+        this.data = response.data;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+  },
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
